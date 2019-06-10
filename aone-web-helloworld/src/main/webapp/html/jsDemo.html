@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>jQuery选择器示例</title>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+
+<body>
+<!--ID的命名规范：含字母、数字、连字符-、下划线_、冒号:、点号.，必须字母开头，大小写敏感。
+建议只用字母数字命名id，避免jQuery转义-->
+<p id="p1"> 第1段 </p>
+<!--class 的命名规范，可参考 How to name css classes: http://bdavidxyz.com/blog/how-to-name-css-classes/-->
+<p class="p-red"> 第2段 </p>
+<p class="p-red p-gold"> 第3段 </p>
+<p hidden="hidden"> 第4段 </p>
+<p title="No.5"> 第5段 </p>
+<hr />
+
+用户名: &nbsp;<input type="text" name="username"><br>
+密码: &nbsp;&nbsp;&nbsp;&nbsp;<input type="password" name="password" autocomplete="new-password"><br>
+<hr />
+
+<input type="checkbox" id="ckb_1" />
+<input type="checkbox" id="ckb_2" disabled="disabled" />
+<input type="checkbox" id="ckb_3" />
+<input type="checkbox" id="ckb_4" />
+<input type="button" id="btn" value="点击">
+<hr />
+
+<ul class="test">
+    <li>列表项</li>
+    <li>列表项
+        <ul>
+            <li>内嵌列表项</li>
+        </ul>
+    </li>
+    <li>列表项</li>
+</ul>
+<!--<hr />-->
+
+<p>这是ul元素后第1个p元素</p>
+<div>
+    <p>这个p元素在div内</p>
+</div>
+<p>这是ul元素后第2个p元素</p>
+<hr />
+
+<ul>
+    ul
+    <li>
+        ul->li
+        <span id="embed_span">ul->li->span</span>
+    </li>
+</ul>
+
+<script type="text/javascript">
+    // * 选择器选取文档中的每个单独的元素，包括 html、head 和 body
+    $("*").css('color', '');
+    // # ID选择器选取带有唯一的指定 id 的元素。选择id=p1的元素
+    $("#p1").css('color','Violet');
+    // . 类选择器选取带有指定class的元素
+    $(".p-red").css('color','red');
+    // 标签选择器选取带有指定标签名的元素
+    $("p").css('color','Purple');
+
+    // 属性选择器
+    // 选择每个带有指定属性的元素
+    $("[hidden]").show();
+    // 选取每个带有指定属性和值的元素
+    $("[title='No.5']").css('color', 'Green');
+    // 选取每个不带有指定属性及值的元素
+    $("[class!='p-red']").css('color', 'yellow');
+    // 选取每个带有指定属性且以指定字符串结尾的元素
+    $("[class$='p-gold']").css('color', 'gold');
+
+    // :选择器
+    // 选择input元素
+    $(":input").css("background-color", "orange");
+    // 选择带有 type="text" 的 input 元素
+    $(":text").css("color", "orange");
+    // 选择带有 type="password" 的 input 元素
+    $(":password").css("background-color", "orange");
+
+    // 复合选择器，两个选择器相连
+    // 把类型为checkbox，同时"可用"的元素设置成"已选择"
+    // :checkbox选择带有 type="checkbox" 的 input 元素
+    $(':checkbox[disabled!="disabled"]').attr("checked",true);
+    $('input:checkbox[disabled!="disabled"]').attr("checked",true);
+
+    // ("parent descendant")选择器选取指定元素的后代的所有元素
+    $("ul.test li").css("color", "DarkBlue");
+    // ("parent > child") 选择器选取指定元素的直接子元素的所有元素。
+    $("ul.test > li").css("color", "DarkRed");
+    // ("element ~ siblings") 选择器选取指定元素 "element" 同级的所有元素。
+    $("ul.test ~ p").css("color","SkyBlue");
+    // ("element + next") 选择器选取指定元素"element" “紧邻”的同级元素"next"。
+    $("ul.test + p").css("color","yellow");
+
+    // :first 选择器选取第一个元素
+    $("ul.test ~ p:first").css('color', 'red');
+    // :last 选择器选取第一个元素
+    $("ul.test ~ p:last").css('color', 'red');
+    // :eq() 选择器选取带有指定 index 值的元素
+    $("ul.test ~ p:eq(1)").css('color', 'blue');
+
+    // parent() 方法返回被选元素的直接父元素
+    $("#embed_span").parent().css('color', 'blue');
+    // parents() 方法返回被选元素的所有祖先元素，它一路向上直到文档的根元素 (<html>)
+    $("#embed_span").parents().css('color', 'red');
+    // 可以使用可选参数来过滤对祖先元素的搜索
+    $("#embed_span").parents("ul").css('color', 'blue');
+</script>
+</body>
+</html>
