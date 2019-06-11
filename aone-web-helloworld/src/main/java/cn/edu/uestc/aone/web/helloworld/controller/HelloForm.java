@@ -13,17 +13,23 @@ import java.io.FileReader;
 @WebServlet("/HelloForm")
 public class HelloForm extends  HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static String path = "D:/";
+    private static String path = "D:/temp/input/";
     private static String filenameTemp;
-    public static boolean creatTxtFile(String name) throws IOException {
-        boolean flag = false;
+    public static String creatTxtFile1(String name) throws IOException {
+        filenameTemp = "D:/temp/" + name + ".txt";
+        File filename = new File(filenameTemp);
+        if (!filename.exists()) {
+            filename.createNewFile();
+        }
+        return filenameTemp;
+    }
+    public static String creatTxtFile2(String name) throws IOException {
         filenameTemp = path + name + ".txt";
         File filename = new File(filenameTemp);
         if (!filename.exists()) {
             filename.createNewFile();
-            flag = true;
         }
-        return flag;
+        return filenameTemp;
     }
     public static String getRandomString(int length){
         String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -44,13 +50,19 @@ public class HelloForm extends  HttpServlet {
         PrintWriter out = response.getWriter();
         String name =new String(request.getParameter("name").getBytes("ISO8859-1"),"UTF-8");
         String filename=getRandomString(10);
-        creatTxtFile(filename);
-        File F=new File(filenameTemp);
+        String x=creatTxtFile1(filename);
+        String y=creatTxtFile2(filename);
+        File F=new File(y);
         FileWriter fileWritter = new FileWriter(F,true);
         fileWritter.write(name);
         fileWritter.close();
-        FileReader fr = new FileReader("D:/test.txt");
-        char[] a = new char[50];
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        FileReader fr = new FileReader(x);
+        char[] a = new char[500000];
         fr.read(a); // 读取数组中的内容
         for (char c : a)
             out.print(c); // 一个一个打印字符
