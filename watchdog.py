@@ -3,19 +3,18 @@ import time
 import logging
 from watchdog.observers import Observer
 from watchdog.events import *
-import jieba.posseg as pseg
+import jieba
 
 def fenci(filepath):
-    print('okl')
     f=open(filepath,"r")
-    fn=open("../result.txt",'w+')
+    fn=open("."+filepath,'a+')
     for line in f.readlines():
-        words =pseg.cut(line)
-        for w in words:
-            print >> fn,str(w)
+        seg_list = jieba.cut(line, cut_all=False)
+        s= "/ ".join(seg_list)
+        fn.write(s)
     fn.close()
     f.close()
-    print('okldaf')
+    print('end')
 
 
 class FileEventHandler(FileSystemEventHandler):
@@ -51,7 +50,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format='%(asctime)s - %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
-    path = sys.argv[1] if len(sys.argv) > 1 else '.'
+    path = '.'
     event_handler = FileEventHandler()
     observer = Observer()
     observer.schedule(event_handler, path, recursive=True)
